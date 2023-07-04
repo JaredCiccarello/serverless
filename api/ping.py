@@ -33,8 +33,8 @@ class handler(BaseHTTPRequestHandler):
             message = ''
             response = requests.get(url + capital)
             data = response.json()
-            country_message = data[0]['name']['common']
-            message = f"The capital of {capital} is {country_message}"
+            capital_message = data[0]['name']['common']
+            message = f"{capital} is the capital of {capital_message}"
             self.wfile.write(message.encode())
 
             return
