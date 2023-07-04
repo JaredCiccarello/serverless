@@ -1,5 +1,5 @@
-from urllib import parse
 from http.server import BaseHTTPRequestHandler
+from urllib import parse
 import requests
 
 class handler(BaseHTTPRequestHandler):
@@ -10,31 +10,37 @@ class handler(BaseHTTPRequestHandler):
         query_string_list = parse.parse_qsl(url_components.query)
         dic = dict(query_string_list)
 
-        # response code
         self.send_response(200)
-
-        # headers
         self.send_header("Content-type", "text/plain")
         self.end_headers()
 
-        word = dic["word"]
+        capital = dic.get('capital')
+        country = dic.get('country')
 
-        # create message
-        url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
+        if country:
+            url = 'https://restcountries.com/v3.1/name'
+            message = ''
+            response = requests.get(url + country)
+            data = response.json()
+            country_message = data[0]['capital'][0]
+            message = f"The capital of {country} is {country_message}"
+            self.wfile.write(message.encode())
 
-        # https://serverless-ooayg6mii-jaredciccarello.vercel.app/api/ping.py?word=Montezuma
+            return
 
+        elif capital:
+            url = 'https://restcountries.com/v3.1/name'
+            message = ''
+            response = requests.get(url + capital)
+            data = response.json()
+            country_message = data[0]['name']['common']
+            message = f"The capital of {capital} is {country_message}"
+            self.wfile.write(message.encode())
 
-        response = requests.get(url + word)
-        data = response.json()
-        definitions = []
-        for word_data in data:
-            definition = word_data["meanings"][0]["definitions"][0]["definition"]
-            definitions.append(definition)
-
-        message = str(definitions)
+            return
 
         # respond with the formatted current time?
+        message = "Invalid request"
         self.wfile.write(message.encode())
 
         return
