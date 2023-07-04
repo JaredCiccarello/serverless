@@ -39,10 +39,4 @@ class handler(BaseHTTPRequestHandler):
 
             return
 
-        # respond with the formatted current time?
-        message = "Invalid request"
-        self.wfile.write(message.encode())
-
-        return
-
 # https://serverless-git-main-jaredciccarello.vercel.app/api/ping?capital=france
