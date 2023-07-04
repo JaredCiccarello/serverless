@@ -18,7 +18,7 @@ class handler(BaseHTTPRequestHandler):
         country = dic.get('country')
 
         if country:
-            url = 'https://restcountries.com/v3.1/name'
+            url = 'https://restcountries.com/v3.1/name/'
             message = ''
             response = requests.get(url + country)
             data = response.json()
@@ -29,7 +29,7 @@ class handler(BaseHTTPRequestHandler):
             return
 
         elif capital:
-            url = 'https://restcountries.com/v3.1/name'
+            url = 'https://restcountries.com/v3.1/capital/'
             message = ''
             response = requests.get(url + capital)
             data = response.json()
@@ -44,3 +44,5 @@ class handler(BaseHTTPRequestHandler):
         self.wfile.write(message.encode())
 
         return
+
+# https://serverless-git-main-jaredciccarello.vercel.app/api/ping?capital=france
